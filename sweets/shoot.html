@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>フェイクスイーツシューティング（レスポンシブ版）</title>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #111;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  background-color: #111;
+  font-family: 'VT323', monospace;
+  color: white;
+  padding: 40px;
+  margin: 0;
+  box-sizing: border-box;
+
+  background-image: url('back.PNG');
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: 350px auto;
+  background-color: #111;
+}
+
+#score {
+  text-align: center;
+  font-size: 24px;
+  margin: 10px 0 20px 0; /* 上右下左の順 */
+  padding-right: 12px; /* ←ここで左に余白 */
+  color: white;
+  font-family: 'VT323', monospace;
+}
+
+canvas {
+  border: 3px solid #dc143c;
+  display: block;
+  height: 400px;  /* canvasの高さも調整 */
+}
+
+#wrapper {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;  /* 上揃え */
+}
+
+#itemInfo {
+  width: 200px;
+  background: #222;
+  padding: 20px;
+  border: 2px solid #dc143c;
+  border-radius: 10px;
+  max-height: 70vh;  /* ビューポート高さの70%までに制限 */
+  overflow-y: auto;  /* 内容が多いときはスクロールできる */
+  box-sizing: border-box;
+}
+
+#itemInfo h2 {
+  color: #ffc0cb;
+  font-size: 28px;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+#itemInfo p {
+  margin: 6px 0;
+  font-size: 18px;
+}
+
+#gameArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 400px;  /* 例：高さを固定 */
+}
+
+#score {
+  margin-top: 12px;
+  font-size: 20px;
+  color: #fff5ee;
+}
+</style>
+</head>
+<body>
+
+<div id="startScreen" style="
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 50px;
+">
+  <button id="startBtn" style="
+    font-size: 18px;
+    padding: 8px 20px;
+    margin-bottom: 20px;
+    background-color: #dc143c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'VT323', monospace;
+  ">
+    START
+  </button>
+
+  <div id="ruleExplain" style="
+    max-width: 400px;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+  ">
+    <p>Cosmic Sweet Blaster</p>
+    <p>スイーツを撃って得点を稼ごう！</p>
+    <p>遊び方：キーボードの矢印キーで左右に移動。</p>
+    <p>スペースキーで発射。</p>
+    <p>ルール：制限時間は１分。</p>
+    <p>⚠️ <strong>Tigron Prime</strong>を撃つとスコアが0になるよ！</p>
+    <p>見た目で見極めて、慎重に狙おう！</p>
+  </div>
+</div>
+
+
+<div id="wrapper" style="display:none;">
+  <div id="itemInfo">
+    <h2>ITEM</h2>
+    <p id="itemName">-</p>
+    <p id="itemScore">-</p>
+    <p id="itemEffect">-</p>
+  </div>
+
+  <div id="gameArea">
+    <canvas id="gameCanvas"></canvas>
+    <div id="score">SCORE: 0</div>
+  </div>
+</div>
+<script>
+
+const startBtn = document.getElementById('startBtn');
+const wrapper = document.getElementById('wrapper');
+const ruleExplain = document.getElementById('ruleExplain');
+const startScreen = document.getElementById('startScreen');
+
+startBtn.addEventListener('click', () => {
+  startScreen.style.display = 'none'; // START画面全体を非表示
+  wrapper.style.display = 'flex';     // ゲーム画面を表示
+  gameStarted = true;
+  init();
+});
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+const PLAYER_WIDTH_RATIO = 0.1;
+const PLAYER_HEIGHT_RATIO = 0.06;
+const SHOT_WIDTH_RATIO = 0.01;
+const SHOT_HEIGHT_RATIO = 0.03;
+
+let PLAYER_WIDTH, PLAYER_HEIGHT, SHOT_WIDTH, SHOT_HEIGHT;
+
+let score = 0;
+let timeLimit = 60000;
+let secretShown = false;
+
+const keys = {};
+
+class Player {
+  constructor(){
+    this.x = canvas.width / 2;
+    this.y = canvas.height * 0.9;
+    this.speed = canvas.width * 0.01;
+    this.shots = [];
+    this.updateSize();
+  }
+  updateSize(){
+    PLAYER_WIDTH = canvas.width * PLAYER_WIDTH_RATIO;
+    PLAYER_HEIGHT = canvas.height * PLAYER_HEIGHT_RATIO;
+    SHOT_WIDTH = canvas.width * SHOT_WIDTH_RATIO;
+    SHOT_HEIGHT = canvas.height * SHOT_HEIGHT_RATIO;
+  }
+  move(){
+    if(keys['ArrowLeft'] && this.x > PLAYER_WIDTH/2) this.x -= this.speed;
+    if(keys['ArrowRight'] && this.x < canvas.width - PLAYER_WIDTH/2) this.x += this.speed;
+  }
+  shoot(){
+    if(this.canShoot){
+      this.shots.push(new Shot(this.x - SHOT_WIDTH/2, this.y - PLAYER_HEIGHT/2));
+      this.canShoot = false;
+      setTimeout(() => this.canShoot = true, 300);
+    }
+  }
+  update(){
+    this.move();
+    this.shots.forEach(shot => shot.update());
+    this.shots = this.shots.filter(shot => !shot.out);
+  }
+  draw(){
+    ctx.fillStyle = '#dc143c';
+    ctx.fillRect(this.x - PLAYER_WIDTH/2, this.y - PLAYER_HEIGHT/2, PLAYER_WIDTH, PLAYER_HEIGHT);
+    this.shots.forEach(shot => shot.draw());
+  }
+}
+
+class Shot {
+  constructor(x,y){
+    this.x = x;
+    this.y = y;
+    this.speed = canvas.height * 0.01;
+    this.out = false;
+  }
+  update(){
+    this.y -= this.speed;
+    if(this.y + SHOT_HEIGHT < 0) this.out = true;
+  }
+  draw(){
+    ctx.fillStyle = '#ffddcc';
+    ctx.fillRect(this.x, this.y, SHOT_WIDTH, SHOT_HEIGHT);
+  }
+}
+
+class Sweet {
+  constructor(type, img){
+    this.type = type;
+    this.width = canvas.width * 0.08;
+    this.height = this.width;
+    this.x = Math.random() * (canvas.width - this.width);
+    this.y = -this.height;
+    this.speed = canvas.height * (0.003 + Math.random() * 0.003);
+    this.img = img;
+    this.hit = false;
+  }
+  update(){
+    this.y += this.speed;
+    if(this.y > canvas.height) this.hit = true;
+  }
+  draw(){
+    if(this.img.complete){
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    } else {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(this.x, this.y, this.width, this.height);
+    }
+  }
+}
+
+const sweetsData = [
+  {name:'Mobius Loop Donut', imgSrc:'3.png', score:3, effect:()=>console.log('時間ループ効果発動！'), effectText:'時間の感覚を巻き戻す', weight: 30},
+  {name:'Cosmic Love Pie', imgSrc:'21.png', score:2, effect:()=>console.log('回復アイテム落下！'), effectText:'やさしい気持ちで全回復', weight: 30},
+  {name:'Nebula Bear Bun', imgSrc:'28.png', score:4, effect:()=>console.log('3方向ショットバフ！'), effectText:'怒ると分裂するらしい', weight: 20},
+  {name:'Snowveil Buttercake', imgSrc:'22.png', score:2, effect:()=>console.log('無敵状態！'), effectText:'ふわふわ防御バリア展開', weight: 15},
+  {name:'Mode: Alà Prün', imgSrc:'pafe.png', score:10, effect:()=>console.log('激レア大量得点！'), effectText:'宇宙で最もレアな甘味', weight: 12},  // ←カンマ追加
+
+  {name: 'Tigron Prime', imgSrc: '8.PNG', score: 0, effect: () => {
+    score = 0;
+    document.getElementById('score').textContent = `SCORE: ${score}`;
+    alert('⚠️ Tigron Primeを撃ってしまった！スコアがリセットされました！');
+  }, effectText: '撃つとスコアが0になる！', weight: 10},
+];
+
+
+const loadedImages = {};
+for(let s of sweetsData){
+  loadedImages[s.name] = new Image();
+  loadedImages[s.name].src = s.imgSrc;
+}
+
+let player;
+let sweets = [];
+let spawnTimer = 0;
+
+function rectsCollide(r1, r2){
+  return !(r2.x > r1.x + r1.width || 
+           r2.x + r2.width < r1.x || 
+           r2.y > r1.y + r1.height ||
+           r2.y + r2.height < r1.y);
+}
+
+function updateItemInfo(sweetData) {
+  document.getElementById('itemName').textContent = sweetData.name;
+  document.getElementById('itemScore').textContent = `スコア: +${sweetData.score}`;
+  document.getElementById('itemEffect').textContent = `効果: ${sweetData.effectText || '???'}`;
+}
+
+function spawnSweet(){
+  const totalWeight = sweetsData.reduce((sum, s) => sum + s.weight, 0);
+  let r = Math.random() * totalWeight;
+  let selected = null;
+  for(let s of sweetsData){
+    if(r < s.weight){
+      selected = s;
+      break;
+    }
+    r -= s.weight;
+  }
+  sweets.push(new Sweet(selected.name, loadedImages[selected.name]));
+  updateItemInfo(selected);
+}
+
+const dangerousItem = {
+  img: new Image(),
+  x: 0,
+  y: 0,
+  width: 50,
+  height: 50,
+  active: false,
+  speed: 1.5,
+};
+dangerousItem.img.src = "sweets/8.PNG"; 
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth * 0.3;
+  canvas.height = canvas.width * 1.5;
+  if(player){
+    player.updateSize();
+    player.x = canvas.width / 2;
+    player.y = canvas.height * 0.9;
+    player.speed = canvas.width * 0.01;
+  }
+  sweets.forEach(s => {
+    s.width = canvas.width * 0.08;
+    s.height = s.width;
+  });
+}
+
+function showSecretCode(){
+  alert('シークレットコード：DORODORO');
+}
+
+function update(){
+  if(!gameStarted) return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  player.update();
+  player.draw();
+
+  sweets.forEach(sweet=>{
+    sweet.update();
+    sweet.draw();
+  });
+
+  for(let i = sweets.length-1; i>=0; i--){
+    for(let j = player.shots.length-1; j>=0; j--){
+      let s = sweets[i];
+      let sh = player.shots[j];
+      if(rectsCollide({x:s.x,y:s.y,width:s.width,height:s.height},
+                      {x:sh.x,y:sh.y,width:SHOT_WIDTH,height:SHOT_HEIGHT})){
+        sweets.splice(i,1);
+        player.shots.splice(j,1);
+
+        const sweetData = sweetsData.find(sd => sd.name === s.type);
+        score += sweetData.score;
+        document.getElementById('score').textContent = `SCORE: ${score}`;
+
+        sweetData.effect();
+        break;
+      }
+    }
+  }
+
+  sweets = sweets.filter(s => !s.hit);
+
+  spawnTimer++;
+  if(spawnTimer > 60){
+    spawnSweet();
+    spawnTimer = 0;
+  }
+
+const elapsed = Date.now() - startTime;
+
+if (!secretShown && elapsed >= timeLimit) {
+  secretShown = true;
+  
+  if (score >= 150) {
+    showSecretCode();
+    alert('Mission Complete');
+  } else {
+    alert('Mission Failed! Score Not Met!');
+  }
+
+  return; // ゲーム停止
+}
+
+  requestAnimationFrame(update);
+}
+
+window.addEventListener('resize', ()=>{ resizeCanvas(); });
+
+document.addEventListener('keydown', e => {
+  keys[e.key] = true;
+  if(e.key === ' '){
+    e.preventDefault();
+    if(player) player.shoot();
+  }
+});
+document.addEventListener('keyup', e => {
+  keys[e.key] = false;
+});
+
+function init(){
+  resizeCanvas();
+  player = new Player();
+  player.canShoot = true;
+  startTime = Date.now(); 
+  update();
+}
+
+</script>
+
+</body>
+</html>
