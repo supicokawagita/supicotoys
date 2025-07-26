@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>プロフィール | 川北すピ子</title>
+<style>
+  .profile-card {
+    display: flex;
+    max-width: 480px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    font-size: 15px;
+  }
+  .profile-card img {
+    height: 300px;
+    width: auto;
+    object-fit: contain;
+    border-right: 1px solid #ccc;
+  }
+  .profile-content {
+    padding: 16px;
+    flex: 1;
+  }
+
+  /* 横並びコンテナ */
+  .social-links {
+    max-width: 480px;
+    margin: 16px auto 0 auto;
+    display: flex;
+    justify-content: center; /* 中央寄せ */
+    gap: 40px; /* アイテム間の余白 */
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    align-items: center;
+  }
+
+  .social-links a {
+    color: #1DA1F2;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+  }
+  .social-links a svg {
+    margin-right: 8px;
+  }
+  .social-links img {
+    width: 120px;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+
+    /* 左右に2枚の背景画像を配置 */
+    background-image: url('pro/pro2.PNG'), url('pro/pro3.PNG');
+
+    /* 左の画像を左中央、右の画像を右中央に配置 */
+    background-position: left center, right center;
+
+    /* 左右の画像は繰り返さず1回だけ表示 */
+    background-repeat: no-repeat, no-repeat;
+
+    /* 左右の画像のサイズ調整 */
+    background-size: auto 80%, auto 80%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+  }
+</style>
+</head>
+<body>
+
+  <div class="profile-card">
+    <img src="pro/pro1.jpg" alt="川北すピ子" />
+    <div class="profile-content">
+     <p>【識別名】川北すピ子</p>
+     <p>【原産地】伊勢→津</p>
+     <p>【活動拠点】東京</p>
+     <p>【親和対象】建物 / 昭和<a href="drr/drr-2.html" style="color: inherit; text-decoration: none; cursor: pointer;">玩</a>具</p>
+     <p>【初期エンコード記憶】オグナ</p>
+    </div>
+  </div>
+
+  <!-- 横並びのリンクとQR -->
+  <div class="social-links">
+    <a href="https://twitter.com/su_pico" target="_blank" rel="noopener noreferrer">
+      <svg height="20" viewBox="0 0 24 24" width="20" fill="#1DA1F2" xmlns="http://www.w3.org/2000/svg" >
+        <path d="M23.954 4.569a10 10 0 01-2.825.775 4.959 4.959 0 002.163-2.724 9.72 9.72 0 01-3.127 1.195 4.92 4.92 0 00-8.379 4.482A13.978 13.978 0 011.671 3.149a4.822 4.822 0 001.523 6.573 4.9 4.9 0 01-2.23-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.996 4.996 0 01-2.224.085 4.933 4.933 0 004.604 3.417A9.867 9.867 0 010 21.539a13.94 13.94 0 007.548 2.212c9.056 0 14.009-7.496 14.009-13.986 0-.21 0-.423-.015-.633A10.012 10.012 0 0024 4.59z"/>
+      </svg>
+      @su_pico
+    </a>
+    <img src="pro/supicoart_qr.png" alt="インスタグラム QRコード" />
+  </div>
+
+</body>
+</html>
