@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>フェルトの民</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0;
+      width: 100vw; height: 100vh;
+      background: #111;
+      overflow: hidden;
+      font-family: 'VT323', monospace;
+      user-select: none;
+    }
+
+    #gallery {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, #222 0%, #000 80%);
+      overflow: hidden;
+    }
+
+    #gallery img {
+      position: absolute;
+      width: 150px;
+      height: auto;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.3s ease;
+      will-change: transform;
+      box-shadow: 0 0 10px rgba(0,255,255,0.5);
+      border-radius: 12px;
+    }
+
+    .shake {
+      animation: shake 0.6s ease;
+    }
+
+    @keyframes shake {
+      0%   { transform: translateX(0); }
+      25%  { transform: translateX(-10px); }
+      50%  { transform: translateX(10px); }
+      75%  { transform: translateX(-10px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* モーダルオーバーレイ */
+    #modalOverlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      cursor: pointer;
+    }
+
+    #modalOverlay img {
+      max-width: 50vw;
+      max-height: 60vh;
+      border-radius: 16px;
+      box-shadow: 0 0 30px cyan;
+      user-select: none;
+    }
+
+    #modalText {
+      color: #0ff;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      background: rgba(0,0,0,0.6);
+      padding: 10px 20px;
+      border-radius: 10px;
+      max-width: 80vw;
+      text-align: center;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="gallery"></div>
+
+  <!-- モーダルオーバーレイ -->
+  <div id="modalOverlay">
+    <img src="" alt="拡大フェルト人形" id="modalImage" />
+    <div id="modalText"></div>
+  </div>
+
+<script>
+  const gallery = document.getElementById('gallery');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalImage = document.getElementById('modalImage');
+  const modalText = document.getElementById('modalText');
+
+  const feltnames = [
+    "1.PNG", "2.PNG", "3.PNG", "4.PNG", "5.PNG",
+    "6.PNG", "7.PNG", "8.PNG", "9.PNG", "10.PNG",
+    "11.PNG", "12.PNG", "13.PNG", "14.PNG", "15.PNG",
+    "16.PNG", "17.PNG", "18.PNG", "19.PNG", "20.PNG",
+    "21.PNG", "22.PNG", "23.PNG", "24.PNG", "25.PNG"
+  ];
+
+  const feltDescriptions = {
+    "1.PNG": "名前：フエルトノミコト(兄)\n種族：フワモノ族\nひとこと：バグった夢を、手縫いでなおすタイプです",
+    "2.PNG": "名前：フエルトノミコト(弟)\n種族：フワモノ族\nひとこと：この夢は、まだ誰の記憶にもなっていない",
+    "3.PNG": "名前：いぬぐるま\n種族：駆動体\nひとこと：ひとりじゃ走れない。それがボクらの仕様です",
+    "4.PNG": "名前：だるま\n種族：招福族\nひとこと：コロリと人生を整える",
+    "5.PNG": "名前：アカタソ\n種族：赤子族\nひとこと：まだ小さな光だけど･･･",
+    "6.PNG": "名前：土星\n種族：赤子族\nひとこと：リングの重さで転がる練習中",
+    "7.PNG": "名前：寅吉\n種族：動物族\nひとこと：トラ柄おしゃれ番長",
+    "8.PNG": "名前：ポンタヌキ\n種族：動物族\nひとこと：バレて全力で逃走中",
+    "9.PNG": "名前：ねじりんぼう(左)\n種族：ねじり族\nひとこと：ひねってひねって、ねじれてまたひねる",
+    "10.PNG": "名前：ねじりんぼう(右)\n種族：ねじり族\n右巻き一本勝負",
+    "11.PNG": "名前：てれびくん\n種族：映像族\nひとこと：いつでもどこでも電波ジャック",
+    "12.PNG": "名前：チューリリ\n種族：花族\nひとこと：春なのに寝坊して花咲かず",
+    "13.PNG": "名前：シェキィ\n種族：赤子族\nひとこと：振りすぎて次元の壁を突き破った伝説のシェーク",
+    "14.PNG": "名前：ベビーボーイ・フォー\n種族：赤子族\nひとこと：毎日フォー食べて元気爆発",
+    "15.PNG": "名前：ちょうちょ\n種族：羽舞族\nひとこと：たまに風向き間違えて壁に激突する",
+    "16.PNG": "名前：フーワン\n種族：赤子族\nひとこと：風船片手にふわふわ浮遊中",
+    "17.PNG": "名前：テナガザル\n種族：動物族\nひとこと：遠くのバナナも楽々ゲット",
+    "18.PNG": "名前：スモタソ\n種族：力士族\nひとこと：土俵に入った瞬間、まわしが風に舞って観客がビビる",
+    "19.PNG": "名前：バラベビー\n種族：赤子族\nひとこと：白根山のふもとで生まれた",
+    "20.PNG": "名前：パンダ\n種族：動物族\nひとこと：竹じゃなくて竹の皮でお団子作ってみた",
+    "21.PNG": "名前：メロリン\n種族：赤子族\nひとこと：中身はスイート全開",
+    "22.PNG": "名前：ハートの子\n種族：赤子族\nひとこと：ドキドキが止まらない",
+    "23.PNG": "名前：黒猫\n種族：動物族\nひとこと：ねえ知ってる？秘密の合言葉は”OYAPUMI”だってさ",
+    "24.PNG": "名前：まねき\n種族：招福族\nひとこと：たまに自分のしっぽにじゃれて遊んじゃう甘えん坊",
+    "25.PNG": "名前：ベイビーアイス\n種族：赤子族\n性格：溶けかけるとみんなが大慌て"
+  };
+
+  const basePath = "ferut/";
+
+  let placedRects = [];
+  const imgWidth = 150;
+  const imgHeight = 150 * (2048/1739);
+
+  function isOverlapping(x, y) {
+    const padding = 10;
+    for (const rect of placedRects) {
+      if (
+        x + imgWidth + padding > rect.x &&
+        x < rect.x + rect.w + padding &&
+        y + imgHeight + padding > rect.y &&
+        y < rect.y + rect.h + padding
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  feltnames.forEach((name, index) => {
+    const img = document.createElement('img');
+    img.src = basePath + name;
+    img.alt = "フェルト人形 " + (index+1);
+    img.style.width = imgWidth + "px";
+
+    const maxAttempts = 100;
+    let x, y, attempt = 0;
+    const galleryW = gallery.clientWidth;
+    const galleryH = gallery.clientHeight;
+
+    do {
+      x = Math.random() * (galleryW - imgWidth);
+      y = Math.random() * (galleryH - imgHeight);
+      attempt++;
+    } while (isOverlapping(x, y) && attempt < maxAttempts);
+
+    placedRects.push({x: x, y: y, w: imgWidth, h: imgHeight});
+
+    img.style.left = x + "px";
+    img.style.top = y + "px";
+
+    img.addEventListener('click', () => {
+      img.classList.add('shake');
+      setTimeout(() => {
+        img.classList.remove('shake');
+        modalImage.src = img.src;
+        modalImage.alt = img.alt;
+        modalText.textContent = feltDescriptions[name] || "未知のフェルト生命体";
+        modalOverlay.style.display = "flex";
+      }, 600);
+    });
+
+    gallery.appendChild(img);
+  });
+
+  modalOverlay.addEventListener('click', () => {
+    modalOverlay.style.display = "none";
+    modalImage.src = "";
+    modalText.textContent = "";
+  });
+</script>
+</body>
+</html>
