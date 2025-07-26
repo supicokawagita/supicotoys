@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <title>ブラックホール・ギャラリー</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background: #000;
+      color: #ccc;
+      display: flex;
+      height: 100vh;
+    }
+
+    #menu {
+      width: 25%;
+      background: #111;
+      padding: 20px;
+      box-sizing: border-box;
+      border-right: 1px solid #444;
+      font-family: 'Press Start 2P', cursive;
+    }
+
+    #menu h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #menu button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      background: #222;
+      color: #ccc;
+      border: 1px solid #333;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    #menu button:hover {
+      background: #333;
+    }
+
+    #content {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      box-sizing: border-box;
+    }
+
+    .image-block {
+      margin-bottom: 20px;
+    }
+
+    .image-block img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid #444;
+    }
+
+    .caption {
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="menu">
+    <h2>BLACKHOLE</h2>
+    <button onclick="loadImages('aa')">AA</button>
+    <button onclick="loadImages('htf')">HTF</button>
+    <button onclick="loadImages('gijinka')">擬人化</button>
+  </div>
+
+  <div id="content">
+    <p>ようこそ。こちらはマスターが幼少期に生成した視覚データの保管室です。</p>
+  </div>
+
+<script>
+  function loadImages(category) {
+    const container = document.getElementById('content');
+    container.innerHTML = ''; // 初期化
+
+    const folder = 'blackhole';
+    let prefix = '';
+
+    switch (category) {
+      case 'aa': prefix = 'aa-'; break;
+      case 'htf': prefix = 'htf-'; break;
+      case 'gijinka': prefix = 'gijinka-'; break;
+    }
+
+    const count = 15; // 上限枚数。実数に合わせて調整可能
+
+    for (let i = 1; i <= count; i++) {
+      const imgPath = `${folder}/${prefix}${i}.jpg`;
+
+      const img = new Image();
+      img.src = imgPath;
+      img.alt = `${prefix}${i}`;
+
+      // 読み込み成功したときだけ表示
+      img.onload = () => {
+        const block = document.createElement('div');
+        block.className = 'image-block';
+
+        const caption = document.createElement('div');
+        block.appendChild(img);
+        block.appendChild(caption);
+        container.appendChild(block);
+      };
+
+      // 読み込み失敗時は何もしない（非表示）
+      img.onerror = () => {
+        // 画像が存在しない場合は表示スキップ
+      };
+    }
+  }
+</script>
+
+
+</body>
+</html>
