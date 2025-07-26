@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>DORODORO Art Gallery</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111;
+      color: #eee;
+      margin: 0;
+      padding: 20px;
+    }
+    .selector {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+.bg-overlay {
+  position: absolute;
+  top: 40px;
+  left: 5px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+
+  width: 20%;     /* サイズを1/5に */
+  height: auto;   /* 縦横比を保つ */
+}
+
+
+  /* ギャラリーなどの要素を前面にする */
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+
+.selector div {
+  width: 24px;
+  height: 24px;
+  background: #e00;  /* 赤色に変更 */
+  border: none;      /* フチなし */
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.selector div.active {
+  background: #f55;  /* アクティブ時は明るい赤に */
+}
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .gallery img {
+      width: 100%;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: transform 0.2s ease;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 背景の透過画像 -->
+  <img src="drr-2.PNG" class="bg-overlay" alt="背景装飾" />
+
+  <!-- 全体を content で囲む -->
+  <div class="content">
+    <div class="selector" id="groupSelector">
+      <div data-group="1"></div>
+      <div data-group="2"></div>
+      <div data-group="3"></div>
+      <div data-group="4"></div>
+      <div data-group="5"></div>
+      <div data-group="6"></div>
+      <div data-group="7"></div>
+      <div data-group="8"></div>
+    </div>
+
+    <div class="gallery" id="galleryContainer">
+      <!-- 画像がここに表示される -->
+    </div>
+
+    <div class="lightbox" id="lightbox">
+      <img id="lightboxImg" src="" alt="">
+    </div>
+  </div>
+
+<script>
+  const groupSelector = document.getElementById('groupSelector');
+  const gallery = document.getElementById('galleryContainer');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+
+  const TOTAL_GROUPS = 8;
+  const IMAGES_PER_GROUP = 9;
+
+  // 初期表示グループ
+  let currentGroup = 1;
+  loadGroup(currentGroup);
+
+  // セレクターイベント
+  groupSelector.querySelectorAll('div').forEach(button => {
+    button.addEventListener('click', () => {
+      const group = parseInt(button.dataset.group);
+      currentGroup = group;
+      setActive(group);
+      loadGroup(group);
+    });
+  });
+
+  function setActive(group) {
+    groupSelector.querySelectorAll('div').forEach(b => b.classList.remove('active'));
+    groupSelector.querySelector(`div[data-group="${group}"]`).classList.add('active');
+  }
+
+function loadGroup(group) {
+  gallery.innerHTML = '';
+  let maxTry = 20; // 最大20枚まで試す
+  for (let i = 1; i <= maxTry; i++) {
+    const img = new Image();
+    img.src = `${group}-${i}.JPG`;
+    img.onload = () => {
+      img.alt = `Image ${group}-${i}`;
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.style.display = 'flex';
+      });
+      gallery.appendChild(img);
+    };
+    img.onerror = () => {
+      // 読み込み失敗した画像は表示しない
+    };
+  }
+}
+
+
+  // Lightbox閉じる
+  lightbox.addEventListener('click', () => {
+    lightbox.style.display = 'none';
+    lightboxImg.src = '';
+  });
+
+  // 初回選択をアクティブに
+  setActive(currentGroup);
+</script>
+
+</body>
+</html>
