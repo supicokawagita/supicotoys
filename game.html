@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <title>アポぺり号 夢冒険</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('back.jpg');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      font-family: 'VT323', monospace;
+      position: relative;
+    }
+
+    .milk {
+      position: absolute;
+      top: 50%;
+      left: 25%;
+      transform: translate(-50%, -50%);
+      height: 75vh;
+      z-index: 1;
+    }
+
+    .speech-box {
+      position: absolute;
+      top: 50%;
+      left: 40%;
+      transform: translateY(-50%);
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
+
+    .speech-box p {
+      margin-top: 0;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      font-family: 'VT323', monospace;
+    }
+
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu li {
+      margin-bottom: 10px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      font-family: 'VT323', monospace;
+      transition: color 0.2s ease;
+    }
+
+    .menu a:hover {
+      color: #0078D7;
+    }
+
+#crewOverlay {
+  display: none; /* 最初は非表示 */
+  position: fixed;  /* 画面固定表示 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.7);
+  z-index: 1000;
+  max-width: 90vw;   /* 最大幅は画面の90% */
+  max-height: 80vh;  /* 最大高さは画面の80% */
+  text-align: center;
+  overflow: auto;    /* はみ出す場合はスクロール */
+}
+
+#crewOverlay img {
+  max-width: 100%;   /* コンテナ幅に合わせる */
+  max-height: 60vh;  /* 画面の高さの60%以内に */
+  border-radius: 12px;
+  margin-bottom: 10px;
+  object-fit: contain;  /* 画像の縦横比を保つ */
+}
+
+  </style>
+</head>
+
+<body>
+<a href="game/milk.html">
+  <img src="game/milk.jpg" alt="ミルクシュレディンガー" class="milk">
+</a>
+
+  <div class="speech-box">
+    <p>USER 認証 完了。<br>次 の ACTION を 選択 してください。</p>
+    <ul class="menu">
+      <li><a href="#" onclick="showCrew(event)">Mission Crew</a></li>
+      <li><a href="sweets/shoot.html">Cosmic Sweet Blaster</a></li>
+      <li><a href="game/puzzle/puzzle.html">Drive.MEM</a></li>
+      <li><a href="#" onclick="showFortune(event)">Milk’s Fortune Cookie Oracle</a></li>
+      <li><a href="#" onclick="showMaintenance(event)">REM Repository</a></li>
+      <li><a href="#" onclick="showMaintenance(event)">Pofnu’s Melonbread Quest</a></li>
+    </ul>
+  </div>
+
+  <!-- ミッションクルー画像オーバーレイ -->
+  <div id="crewOverlay">
+    <button id="closeCrew" onclick="closeCrew()">×</button>
+    <img id="crewImage" src="game/gamecrew-spec1.jpg" alt="Crew Spec 1">
+    <div>
+      <button onclick="changeCrewImage(1)">Spec 1</button>
+      <button onclick="changeCrewImage(2)">Spec 2</button>
+    </div>
+  </div>
+
+<script>
+  function showCrew(event) {
+    event.preventDefault();
+    document.getElementById('crewOverlay').style.display = 'block';
+    changeCrewImage(1); // 最初はSpec1表示
+  }
+
+  function closeCrew() {
+    document.getElementById('crewOverlay').style.display = 'none';
+  }
+
+  function changeCrewImage(num) {
+    const img = document.getElementById('crewImage');
+    if(num === 1) {
+      img.src = 'game/gamecrew-spec1.jpg';
+      img.alt = 'Crew Spec 1';
+    } else if(num === 2) {
+      img.src = 'game/gamecrew-spec2.jpg';
+      img.alt = 'Crew Spec 2';
+    }
+  }
+
+  function showFortune(event) {
+    event.preventDefault();
+    const fortunes = [
+      "【大吉】システム起動完了。次の航行は安定圏内。",
+      "【吉】量子運命計算中…成功確率87%。継続せよ。",
+      "【吉】パラメータ異常なし。最適解へ接近中。",
+      "【小吉】エネルギーフィールド安定。注意深く進め。",
+      "【大凶】未来予測：不確定領域。冷静に解析を。",
+      "【吉】コード検証済み。バグなし。自信を持て。",
+      "【凶】感情モジュール非作動。冷静な判断を推奨。",
+      "【吉】データ同期完了。情報収集を続けよ。"
+    ];
+    const message = fortunes[Math.floor(Math.random() * fortunes.length)];
+    alert("♡ ミルクのフォーチュンクッキー占い ♡\n\n" + message);
+  }
+
+  function showMaintenance(event) {
+    event.preventDefault();
+    alert(" システム通知：\n現在、該当モジュールは整備中です。\n完了までしばらくお待ちください。\n— ミルクシュレディンガー");
+  }
+</script>
+</body>
+</html>
