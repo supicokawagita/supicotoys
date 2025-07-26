@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <title>すピ子のほーむぺーじ</title>
+  <style>
+    /* 画面全体の背景に画像を設定 */
+    body {
+      background-color: #fffafa;         /* 画像がない部分の背景色 */
+      margin: 0;
+      height: 100vh;                    /* ビューポートの高さに合わせる */
+      color: #000000;                    /* 文字色を白に */
+    }
+.vertical-text {
+  position: fixed;
+  right: 10px;
+  top: 10%;
+  transform: none;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: 'Malgun Gothic'; serif;
+  font-size: 1.6rem;
+  padding: 10px 15px;
+  background-color: rgba(255,255,255,0.1);
+  border-radius: 8px 0 0 8px;
+  user-select: none;
+  height: 80vh;
+  /* display: flex;  ←ここは一旦コメントアウト */
+  /* flex-direction: column; */
+  /* justify-content: flex-start; */
+  /* align-items: center; */
+}/* ここでh1とpだけ明朝体に切り替え */
+.vertical-text h1,
+.vertical-text p {
+  font-family: 'Malgun Gothic'; serif;
+}
+.vertical-menu li a {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: black;
+  transition: color 0.3s ease;
+}
+
+.vertical-menu li a:hover,
+.vertical-menu li a:visited,
+.vertical-menu li a:active {
+  color: black;                /* ホバー・訪問済み・クリック時も黒 */
+}
+  </style>
+</head>
+<body>
+
+    <!-- 左：TOP画像 -->
+    <div class="top-illustration">
+    <img id="randomImage" src="" alt="TOP画像" style="max-width: 33%; height: auto; margin-top: 10px;">
+    </div>
+
+<script>
+  // 画像ファイルのパスを配列で用意
+  const images = [
+    'illust/2024-31.jpg',
+    'illust/2025-23.jpg',
+    'illust/2024-42.jpg',
+    'illust/2023-22.jpg'
+  ];
+
+  // ランダムなインデックスを生成
+  const randomIndex = Math.floor(Math.random() * images.length);
+
+  // imgタグにランダム画像を設定
+  document.getElementById('randomImage').src = images[randomIndex];
+</script>
+
+    <!-- 右：タイトル文字 -->
+    <div class="vertical-text">
+    <h1>ピ印玩具店</h1>
+    <p>川北すピ子の遊び場所</p>
+
+  <ul class="vertical-menu">
+          <li><a href="profile.html">IDENT CHIP</a></li>
+          <li><a href="illust.html">DREAM SKETCH</a></li>
+          <li><a href="game.html">MEMORY DIVE</a></li>
+          <li><a href="felt.html">SOFTWARE FAB</a></li>
+          <li><a href="sweets.html">SWEET FORGE</a></li>
+          <li><a href="https://uwa55.cart.fc2.com/">LUNARIS-EMPΩRIUM</a></li>
+  </ul>
+    </div>
+<footer>
+  <p style="color:#444; font-size:10px; text-align:center; margin-top: 40px;">
+    © 2025 川北すピ子. All Rights Reserved.
+  </p>
+</footer>
+</body>
+</html>
