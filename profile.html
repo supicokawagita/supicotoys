@@ -61,7 +61,7 @@
     background-color: #f5f5f5;
 
     /* 左右に2枚の背景画像を配置 */
-    background-image: url('pro/pro2.png'), url('pro/pro3.png');
+    background-image: url('pro/pro2.PNG'), url('pro/pro3.PNG');
 
     /* 左の画像を左中央、右の画像を右中央に配置 */
     background-position: left center, right center;
@@ -79,6 +79,34 @@
     height: 100vh;
     font-family: 'Segoe UI', sans-serif;
   }
+.neon-archive-link {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5em;
+  color: #ff007f; /* 赤寄りの蛍光ピンク */
+  text-align: center;
+  letter-spacing: 0.2em;
+  text-shadow:
+    0 0 5px #ff007f,
+    0 0 10px #ff1a8c,
+    0 0 20px #ff3399,
+    0 0 40px #ff66b2;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 4px;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.neon-archive-link:hover {
+  color: #ff3399;
+  text-shadow:
+    0 0 10px #ff007f,
+    0 0 20px #ff1a8c,
+    0 0 30px #ff3399,
+    0 0 60px #ff66b2;
+}
+
+
 </style>
 </head>
 <body>
@@ -91,6 +119,7 @@
      <p>【活動拠点】東京</p>
      <p>【親和対象】建物 / 昭和<a href="drr/drr-2.html" style="color: inherit; text-decoration: none; cursor: pointer;">玩</a>具</p>
      <p>【初期エンコード記憶】オグナ</p>
+     <p><a href="exhibition/exhibition.html" class="neon-archive-link">The Archive</a></p>
     </div>
   </div>
 
