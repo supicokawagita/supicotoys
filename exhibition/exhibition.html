@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>The Archive</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f5f5f5;
+    }
+h1 {
+  font-family: 'Orbitron', sans-serif;
+}
+.exhibition-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5em;
+  color: #0ff;
+  text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 30px #0ff;
+  letter-spacing: 0.1em;
+}
+    .dm-thumbnails {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .dm-thumbnails img {
+      width: 80px;
+      height: auto;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+    .dm-thumbnails img.active {
+      border-color: #555;
+    }
+    #main-image {
+      margin-top: 20px;
+      max-width: 90%;
+      max-height: 500px;
+      border: 1px solid #ccc;
+    }
+    .next-btn {
+      margin-top: 10px;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>The Archive</h1>
+
+  <!-- DMサムネイル一覧 -->
+  <div class="dm-thumbnails" id="dmList">
+    <img src="qpcat-1.jpg" alt="Qpcat DM" data-key="qpcat" class="active">
+    <img src="otome-1.jpg" alt="Otome DM" data-key="otome">
+    <img src="wata-1.jpg" alt="Wata DM" data-key="wata">
+    <img src="shiro-1.jpg" alt="Shiro DM" data-key="shiro">
+    <img src="tsuki-1.jpg" alt="Tsuki DM" data-key="tsuki">
+    <img src="eisei-1.jpg" alt="Eisei DM" data-key="eisei">
+    <img src="sweet-1.jpg" alt="Sweet DM" data-key="sweet">
+    <img src="brazil-1.jpg" alt="Beazil DM" data-key="brazil">
+    <img src="hina-1.jpg" alt="Hina DM" data-key="hina">
+    <img src="kon-1.jpg" alt="Kon DM" data-key="kon">
+    <img src="uraraka-1.jpg" alt="Uraraka DM" data-key="uraraka">
+  </div>
+
+  <!-- 表示用の展示画像 -->
+  <div>
+    <img id="main-image" src="qpcat-2.jpg" alt="展示画像">
+    <div class="next-btn" id="nextBtn">▶</div>
+  </div>
+
+  <script>
+const exhibitions = {
+  qpcat:  ["qpcat-2.jpg",  "qpcat-3.jpg",  "qpcat-4.jpg"],
+  otome:  ["otome-2.jpg",  "otome-3.jpg",  "otome-4.jpg"],
+  wata:   ["wata-2.jpg",   "wata-3.jpg",   "wata-4.jpg",   "wata-5.jpg",   "wata-6.jpg"],
+  shiro:  ["shiro-2.jpg",  "shiro-3.jpg",  "shiro-4.jpg"],
+  tsuki:  ["tsuki-2.jpg",  "tsuki-3.jpg",  "tsuki-4.jpg",  "tsuki-5.jpg",  "tsuki-6.jpg"],
+  eisei:  ["eisei-2.jpg",  "eisei-3.jpg",  "eisei-4.jpg",  "eisei-5.jpg",  "eisei-6.jpg"],
+  sweet:  ["sweet-2.jpg",  "sweet-3.jpg",  "sweet-4.jpg",  "sweet-5.jpg",  "sweet-6.jpg"],
+  brazil: ["brazil-2.jpg", "brazil-3.jpg", "brazil-4.jpg"],
+  hina:   ["hina-2.jpg",   "hina-3.jpg",   "hina-4.jpg",   "hina-5.jpg",   "hina-6.jpg",   "hina-7.jpg"],
+  kon:    ["kon-2.jpg",    "kon-3.jpg",    "kon-4.jpg",    "kon-5.jpg",    "kon-6.jpg"],
+  uraraka: ["uraraka-2.jpg", "uraraka-3.jpg", "uraraka-4.jpg", "uraraka-5.jpg", "uraraka-6.jpg",
+            "uraraka-7.jpg", "uraraka-8.jpg", "uraraka-9.jpg", "uraraka-10.jpg", "uraraka-11.jpg", "uraraka-12.jpg"]
+};
+
+    let currentKey = "qpcat";
+    let currentIndex = 0;
+
+    const mainImage = document.getElementById("main-image");
+    const nextBtn = document.getElementById("nextBtn");
+    const dmImages = document.querySelectorAll("#dmList img");
+
+    // サムネイルクリック時
+    dmImages.forEach(img => {
+      img.addEventListener("click", () => {
+        dmImages.forEach(i => i.classList.remove("active"));
+        img.classList.add("active");
+
+        currentKey = img.dataset.key;
+        currentIndex = 0;
+        mainImage.src = exhibitions[currentKey][currentIndex];
+      });
+    });
+
+    // ▶ボタンで次の画像へ
+    nextBtn.addEventListener("click", () => {
+      const images = exhibitions[currentKey];
+      currentIndex = (currentIndex + 1) % images.length;
+      mainImage.src = images[currentIndex];
+    });
+  </script>
+
+</body>
+</html>
