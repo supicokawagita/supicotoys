@@ -6,33 +6,22 @@
 
 <script>
   const form = document.getElementById('dreamForm');
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener('submit', e => {
     e.preventDefault();
 
     const dreamText = document.getElementById('dreamInput').value;
-    const url = 'https://script.google.com/macros/s/AKfycbwvxyfJxWLpmo36_m7vJ5U9brzkSgvfXgSu4TCpIeSz_gfMBi3SFzqCEgvSKsTvJSE2Pw/exec';
+    const url = 'https://script.google.com/macros/s/AKfycbyjUjJAX_eXpkTSr_bwfyE7u-01khVYByzGzJ2GGhR_oIPl18UPEGJE0QySTgLdiDEYiA/exec?dream=' + encodeURIComponent(dreamText);
 
-    const formData = new URLSearchParams();
-    formData.append('dream', dreamText);
-
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        body: formData
-      });
-
-      const text = await response.text();
-
-      if (text.trim() === 'success') {
+    // 注意: textとして受け取る（← JSONじゃない！）
+    fetch(url)
+      .then(response => response.text())
+      .then(data => {
         document.getElementById('status').textContent = '夢日記送信成功！ありがとう😊';
         form.reset();
-      } else {
-        document.getElementById('status').textContent = 'サーバー側でエラーが返されました…';
-        console.error('Unexpected response:', text);
-      }
-    } catch (err) {
-      document.getElementById('status').textContent = '送信エラーが発生しました…';
-      console.error(err);
-    }
+      })
+      .catch(err => {
+        document.getElementById('status').textContent = '送信エラーが発生しました…';
+        console.error(err);
+      });
   });
 </script>
