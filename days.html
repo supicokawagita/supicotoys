@@ -10,9 +10,9 @@
     e.preventDefault();
 
     const dreamText = document.getElementById('dreamInput').value;
-    const url = 'https://script.google.com/macros/s/AKfycbyjUjJAX_eXpkTSr_bwfyE7u-01khVYByzGzJ2GGhR_oIPl18UPEGJE0QySTgLdiDEYiA/exec?dream=' + encodeURIComponent(dreamText);
+    const url = 'https://script.google.com/macros/s/AKfycbxfVE24NmDTeadC4aYRyZAPOB6Y54-F7dbmfUwars7LMc6tSmYcNBucigXZDvYmOtbF5A/exec?dream=' + encodeURIComponent(dreamText);
 
-    fetch(url, { method: 'GET' })  // 明示的にGETにする
+    fetch(url)
       .then(response => response.json())
       .then(data => {
         document.getElementById('status').textContent = '夢日記送信成功！ありがとう😊';
