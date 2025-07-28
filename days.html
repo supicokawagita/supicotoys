@@ -1,0 +1,29 @@
+<form id="dreamForm">
+  <textarea id="dreamInput" placeholder="夢を書いてね" rows="5" required></textarea>
+  <button type="submit">送信</button>
+</form>
+<div id="status"></div>
+
+<script>
+  const form = document.getElementById('dreamForm');
+  form.addEventListener('submit', e => {
+    e.preventDefault(); // 送信時のページ再読み込みを防止
+
+    const dreamText = document.getElementById('dreamInput').value;
+
+    fetch('https://script.google.com/macros/s/AKfycbyom8KEoa11bYz0rIDbBAS4JtD65THO6uqUX2tNV44Lr9alzjW6x000BqjEJ7rUA1UwSw/exec', {
+      method: 'POST',
+      body: JSON.stringify({ dream: dreamText }),
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('status').textContent = '夢日記送信成功！ありがとう😊';
+      form.reset();  // フォームの入力欄を空にする
+    })
+    .catch(err => {
+      document.getElementById('status').textContent = '送信エラーが発生しました…';
+      console.error(err);
+    });
+  });
+</script>
