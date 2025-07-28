@@ -6,31 +6,33 @@
 
 <script>
   const form = document.getElementById('dreamForm');
-  form.addEventListener('submit', async e => {
+  const statusDiv = document.getElementById('status');
+
+  form.addEventListener('submit', e => {
     e.preventDefault();
 
     const dreamText = document.getElementById('dreamInput').value;
-    const url = 'https://script.google.com/macros/s/AKfycbyIm6SU2rYc62L_mlcaHbkpAm9GvpCU-DJUyqlo25-K5g7Qbqq-jKHtYS4Vm9bY1KH6ng/exec';
 
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ dream: dreamText }),
+    fetch('https://script.google.com/macros/s/AKfycbz8wBCL9t7BDWdd3DeEw9wG5yxpAQxrCHSoexPOiEKpt4BjDWJjzY9EP8VQLv-Ow_8R4Q/exec', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ dream: dreamText }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          statusDiv.textContent = '夢日記送信成功！ありがとう😊';
+          form.reset();
+        } else {
+          statusDiv.textContent = '送信エラー（GAS側）';
+        }
+      })
+      .catch(error => {
+        statusDiv.textContent = '送信エラーが発生しました…';
+        console.error('Fetch error:', error);
       });
-
-      const data = await response.json();
-      if (data.status === 'success') {
-        document.getElementById('status').textContent = '夢日記送信成功！ありがとう😊';
-        form.reset();
-      } else {
-        throw new Error(data.message || '不明なエラー');
-      }
-    } catch (err) {
-      document.getElementById('status').textContent = '送信エラーが発生しました…';
-      console.error(err);
-    }
   });
 </script>
