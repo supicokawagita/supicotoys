@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>The Dreamy Toy Box</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: '游ゴシック', 'Yu Gothic', sans-serif;
+      background-color: #4b3621;
+      background-image: url('bunka/back2.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #fff;
+    }
+
+    .overlay-image {
+      position: fixed;
+      top: 0px;
+      right: 0;
+      width: 450px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+h1 {
+  font-family: 'Oxanium', cursive;
+  font-weight: 700;
+  font-size: 3em;
+  color: #fff;
+  text-shadow: 0 0 8px #fff;
+  position: relative;
+  z-index: auto;
+  text-align: center;
+  margin: 60px 0 40px;
+}
+
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 28px;
+      max-width: 1200px;
+      margin: 0 auto 80px auto;
+      padding: 0 20px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .doll-card {
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      backdrop-filter: blur(2px);
+      text-align: center;
+    }
+
+    .doll-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 2px solid #fff5e1;
+      cursor: pointer; /* クリックできる感じに */
+    }
+
+.doll-title {
+  margin-top: 10px;
+  font-size: 1.1em;
+  color: #696969;
+  font-family: 'Oxanium', cursive;
+  font-weight: 600;
+  color: #696969;
+}
+
+    /* モーダルのスタイル */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+#modal img {
+  display: none;
+  max-width: 90%;
+  max-height: 90%;
+  border: 4px solid #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #000;
+  user-select: none;
+  z-index: 10000;
+  position: relative;
+}
+  </style>
+</head>
+<body>
+
+  <img src="bunka/back1.png" alt="背景の女の子" class="overlay-image" />
+
+  <h1>The Dreamy Toy Box</h1>
+
+  <div class="gallery">
+ 
+    <div class="doll-card">
+      <img src="bunka/bunka-1.jpg" alt="文化人形1" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-1</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-2.jpg" alt="文化人形2" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-2</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-3.jpg" alt="文化人形3" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-3</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-4.jpg" alt="文化人形4" style="max-width: 50%;">
+      <div class="doll-title">ZeroGlim型-1</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-5.jpg" alt="文化人形5" style="max-width: 50%;">
+      <div class="doll-title">NeoBonnettes型-1</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-6.jpg" alt="文化人形6" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-4</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-7.jpg" alt="文化人形7" style="max-width: 50%;">
+      <div class="doll-title">NeoBonnettes型-2</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-8.jpg" alt="文化人形8" style="max-width: 50%;">
+      <div class="doll-title">NeoBonnettes型-3</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-9.jpg" alt="文化人形9" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-5</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-10.jpg" alt="文化人形10" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-6</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-11.jpg" alt="文化人形11" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-7</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-12.jpg" alt="文化人形12" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-8</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-13.jpg" alt="文化人形13" style="max-width: 50%;">
+      <div class="doll-title">NeoBonnettes型-4</div>
+    </div>
+    <div class="doll-card">
+      <img src="bunka/bunka-14.jpg" alt="文化人形14" style="max-width: 50%;">
+      <div class="doll-title">NeuroNears型-9</div>
+    </div>
+ <!-- モーダル本体 -->
+  <div id="modal">
+    <img id="modal-img" src="" alt="拡大画像" />
+  </div>
+
+  <script>
+// 画像クリック時
+document.querySelectorAll('.doll-card img').forEach(img => {
+  img.addEventListener('click', () => {
+    const modalImg = document.getElementById('modal-img');
+    modalImg.src = img.src;
+    modalImg.style.display = 'block';  // 表示に切り替え
+    document.getElementById('modal').style.display = 'flex';
+  });
+});
+
+// モーダル閉じるとき
+document.getElementById('modal').addEventListener('click', (e) => {
+  if (e.target.id === 'modal') {
+    document.getElementById('modal').style.display = 'none';
+    document.getElementById('modal-img').style.display = 'none';  // 画像も非表示に戻す
+  }
+});
+  </script>
+
+</body>
+</html>
