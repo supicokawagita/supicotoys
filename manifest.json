@@ -1,0 +1,15 @@
+{
+  "name": "すぴこのほーむぺーじ",
+  "short_name": "すぴこHP",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff5ee",
+  "theme_color": "#ffcccc",
+  "icons": [
+    {
+      "src": "supiko-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
