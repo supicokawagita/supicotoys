@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>white-library</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: 'Orbitron', sans-serif;
+      color: #f5f5f5;
+      background: url('back.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+      overflow: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 1.5em;
+      color: #f5f5f5;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-shadow:
+        0 0 6px #f5f5f5,
+        0 0 12px #d9d9d9,
+        0 0 18px #c0c0c0;
+      opacity: 0.8;
+      z-index: 10;
+      margin-bottom: 50px;
+    }
+
+    /* 画像共通スタイル */
+    .floating-image {
+      position: absolute;
+      width: 140px;
+      border-radius: 8px;
+      opacity: 0.9;
+      z-index: 5;
+      user-select: none;
+    }
+
+    /* 個別位置調整 */
+    .pofnu { top: 50%; right: 30%; }
+    .mmm { top: 40%; left: 7%; }
+    .sister1 { top: 60%; left: 15%; }
+    .sister2 { bottom: 60%; right: 10%; }
+    .cat { top: 20%; left: 25%; }
+  </style>
+</head>
+<body>
+  <h1>white-library</h1>
+
+  <a href="pofnu.html" title="ぽふぬの記憶の断片">
+    <img src="pofnu.png" alt="pofnu" class="floating-image pofnu" />
+  </a>
+  <a href="perigee.html" title="ペリジーの記憶の断片">
+    <img src="sister2.jpg" alt="sister2" class="floating-image sister2" />
+  </a>
+  <a href="apogee.html" title="アポジーの記憶の断片">
+    <img src="mmm.jpg" alt="mmm" class="floating-image mmm" />
+  </a>
+  <img src="sister1.jpg" alt="sister1" class="floating-image sister1" />
+  <img src="cat.png" alt="cat" class="floating-image cat" />
+</body>
+</html>
