@@ -6,22 +6,31 @@
 
 <script>
   const form = document.getElementById('dreamForm');
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
 
     const dreamText = document.getElementById('dreamInput').value;
-    const url = 'https://script.google.com/macros/s/AKfycbyjUjJAX_eXpkTSr_bwfyE7u-01khVYByzGzJ2GGhR_oIPl18UPEGJE0QySTgLdiDEYiA/exec?dream=' + encodeURIComponent(dreamText);
+    const url = 'https://script.google.com/macros/s/AKfycbyIm6SU2rYc62L_mlcaHbkpAm9GvpCU-DJUyqlo25-K5g7Qbqq-jKHtYS4Vm9bY1KH6ng/exec';
 
-    // 注意: textとして受け取る（← JSONじゃない！）
-    fetch(url)
-      .then(response => response.text())
-      .then(data => {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ dream: dreamText }),
+      });
+
+      const data = await response.json();
+      if (data.status === 'success') {
         document.getElementById('status').textContent = '夢日記送信成功！ありがとう😊';
         form.reset();
-      })
-      .catch(err => {
-        document.getElementById('status').textContent = '送信エラーが発生しました…';
-        console.error(err);
-      });
+      } else {
+        throw new Error(data.message || '不明なエラー');
+      }
+    } catch (err) {
+      document.getElementById('status').textContent = '送信エラーが発生しました…';
+      console.error(err);
+    }
   });
 </script>
