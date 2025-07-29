@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>EchoTanka</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
+    body {
+      margin: 0;
+      padding: 40px 0;
+      background: url('ufoback.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Audiowide', cursive;
+      color: #222;
+      background-color: #000014;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 50px;
+      color: #f8f8ff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+      font-size: 2rem;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .entry {
+      display: flex;
+      width: 100%;
+      margin-bottom: 40px;
+      align-items: flex-start;
+      box-sizing: border-box;
+    }
+
+    .left {
+      justify-content: flex-start;
+      padding-left: 80px;
+    }
+
+    .right {
+      justify-content: flex-end;
+      padding-right: 80px;
+    }
+
+    .bubble {
+      max-width: 300px;
+      width: auto;
+      background: #f8f8ff;
+      padding: 14px 20px;
+      border-radius: 16px;
+      position: relative;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      letter-spacing: 0.03em;
+      color: #708090;
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+      user-select: none;
+      white-space: pre-line;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    /* 三角吹き出しの疑似要素削除 */
+
+    .author {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #555;
+      text-align: right;
+      font-style: italic;
+      user-select: none;
+    }
+    .footer {
+      text-align: center;
+      color: #483d8b;
+      font-family: 'Audiowide', cursive;
+      font-size: 0.8rem;
+      margin-top: 60px;
+      user-select: none;
+      letter-spacing: 0.1em;
+      white-space: pre-line;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+  <h1>EchoTanka</h1>
+
+  <div class="container">
+    <div class="entry left">
+      <div>
+        <div class="bubble">
+まばたきの　数だけ銀河　過ぎゆけば
+名前のない星　我が名を映す
+
+log 01 - α宙域
+        </div>
+        <div class="author">ユーフォ</div>
+      </div>
+    </div>
+
+    <div class="entry right">
+      <div>
+        <div class="bubble">
+わたくしが　わたくしでない　旅をして
+銀の皮膜に　あなたが映る
+
+log 02 - 彗星すれ違い通信
+        </div>
+        <div class="author">２号</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="entry left">
+      <div>
+        <div class="bubble">
+月光が　静かに揺れる　夜空で
+私の名を　呼ぶ声聞く
+
+log 03 - α宙域
+        </div>
+        <div class="author">ユーフォ</div>
+      </div>
+    </div>
+
+    <div class="entry right">
+      <div>
+        <div class="bubble">
+夢の海　漂う波間に　映るは
+君の声なき　囁きの灯
+
+log 04 - 彗星すれ違い通信
+        </div>
+        <div class="author">２号</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="entry left">
+      <div>
+        <div class="bubble">
+漂うは　宇宙の静寂　深くて
+囁く星の　秘密の詩
+
+log 05 - α宙域
+        </div>
+        <div class="author">ユーフォ</div>
+      </div>
+    </div>
+
+    <div class="entry right">
+      <div>
+        <div class="bubble">
+忘却の　砂漠越えゆく　ロケット
+夢を抱いて　未来を映す
+
+log 06 - 彗星すれ違い通信
+        </div>
+        <div class="author">２号</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+-- CONNECTION LOST --<br>
+Echo fades into the void,<br>
+waiting for the next call.
+  </div>
+</body>
+</html>
