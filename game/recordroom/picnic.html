@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>えんそくのしおり</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url("picnicback.jpg");
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: sans-serif;
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      /* 背景色をなくす（ここを削除またはコメントアウト） */
+      /* background-color: rgba(255, 255, 255, 0.8); */
+    }
+
+    .content img {
+      display: block;
+      width: 66%; /* ← 画像サイズを約2/3に */
+      margin: 40px auto; /* 中央寄せ + 上下間隔を広めに */
+      box-shadow: none; /* 影を消す */
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <img src="picnic1.jpg" alt="しおりページ1">
+    <img src="picnic2.jpg" alt="しおりページ2">
+  </div>
+</body>
+</html>
