@@ -1,93 +1,104 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <meta charset="UTF-8" />
+  <!-- head内に追加 -->
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <title>イラスト展示ページ</title>
   <style>
-    /* 全画面を左右2分割 */
-body {
-  display: flex;
-  flex-wrap: nowrap;      /* 横並びを強制 */
-  background-color: #fffff0;
-  color: white;
-  min-height: 100vh;      /* 画面の高さ分は最低確保 */
-  align-items: stretch;   /* 子要素の高さを揃える */
-  margin: 0;              /* 余白リセット */
+    body {
+      display: flex;
+      flex-wrap: nowrap;
+      background-color: #f4f4f4;
+      color: #333;
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      width: 130px;
+      min-width: 130px;
+      background-color: #e0e0e0;
+      padding: 20px 10px;
+      box-sizing: border-box;
+      border-right: 1px solid #ccc;
+    }
+
+/* h2スタイルを変更 */
+.sidebar h2 {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  color: #333;
 }
 
-    /* 左のメニューバー */
-.sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;  /* 画面高さいっぱいに */
-  overflow-y: auto;  /* メニューが多くてもスクロール可能に */
-  width: 150px;
-  min-width: 150px;
-  background-color: #fffff0;
-  padding: 10px;
-  box-sizing: border-box;
-}
-    .sidebar h2 {
-      font-size: 1.2rem;
-      margin-top: 0;
-      margin-bottom: 1rem;
-      text-align: center;
-      font-family: 'Press Start 2P', cursive;
-      color: black;
+
+    .year-list {
+      padding: 0;
+      margin: 0;
     }
+
 .year-list li {
-  width: 100%;
-  box-sizing: border-box; /* paddingやborderを含めて幅を固定 */
+  list-style: none;
+  padding: 5px 4px;
+  margin-bottom: 5px;
+  font-size: 0.85rem;
+  background-color: #d0d0d0;
+  text-align: center;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
-    .year-list li {
-      margin-bottom: 10px;
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 4px;
-      text-align: center;
-      background-color: #66cdaa;
-      transition: background-color 0.3s ease;
-      list-style: none;
-      padding-left: 0;
-      margin-left: 0;
+
+
+    .year-list li:hover {
+      background-color: #bbb;
     }
 
+    .year-list li.active {
+      background-color: #999;
+      color: #fff;
+    }
 
-    /* 右の絵の表示エリア */
-.content {
-  flex-grow: 1;
-  padding: 10px;
-  box-sizing: border-box;
-  overflow-y: auto;
-  border-left: 2px solid #66cdaa;
-  max-height: 100vh;  /* 画面高さに制限 */
-}
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
     .content img {
-      width: 36%; /* 横幅を2/3にする（＝今の約36%） */
+      width: 33%;
+      max-width: 400px;
+      margin: 0 auto 20px auto;
       display: block;
-      margin: 0 auto 20px auto; /* 中央寄せ＆下に余白 */
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+      border-radius: 2px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
   <nav class="sidebar">
-    <h2>LOG</h2>
+    <h2>ILLUST LOG</h2>
     <ul class="year-list" id="yearList">
-      <!-- JSで2015〜2025を追加 -->
+      <!-- JSで追加 -->
     </ul>
   </nav>
   <main class="content" id="contentArea">
-    <!-- ここに選んだ年のイラストが表示される -->
+    <!-- 画像表示エリア -->
   </main>
 
   <script>
     const yearListEl = document.getElementById('yearList');
     const contentEl = document.getElementById('contentArea');
 
-    // 2013〜2024までリストを作成
     for(let year = 2015; year <= 2025; year++) {
       const li = document.createElement('li');
       li.textContent = year + "年";
@@ -97,25 +108,24 @@ body {
       yearListEl.appendChild(li);
     }
 
-    // 選択した年の処理
-function selectYear(year, clickedLi) {
-  document.querySelectorAll('.year-list li').forEach(li => li.classList.remove('active'));
-  clickedLi.classList.add('active');
+    function selectYear(year, clickedLi) {
+      document.querySelectorAll('.year-list li').forEach(li => li.classList.remove('active'));
+      clickedLi.classList.add('active');
 
-  const contentEl = document.getElementById('contentArea');
-  contentEl.innerHTML = '';
+      contentEl.innerHTML = '';
 
-  for (let i = 1; i <= 200; i++) { // ← 最大200枚まで試す
-    const img = document.createElement('img');
-    img.src = `illust/${year}-${i}.jpg`;
-    img.alt = `${year}年 イラスト ${i}`;
-    img.onerror = function () {
-      this.remove(); // 読み込めなかった画像は削除
-    };
-    contentEl.appendChild(img);
-  }
-}
-    // 最初は2015年を選択して表示
+      for (let i = 1; i <= 200; i++) {
+        const img = document.createElement('img');
+        img.src = `illust/${year}-${i}.jpg`;
+        img.alt = `${year}年 イラスト ${i}`;
+        img.onerror = function () {
+          this.remove();
+        };
+        contentEl.appendChild(img);
+      }
+    }
+
+    // 初期表示
     const firstLi = yearListEl.querySelector('li');
     if(firstLi) firstLi.click();
   </script>
