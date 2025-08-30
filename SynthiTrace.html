@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>SynthiTrace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d0d1a;
+      color: #c0f0ff;
+      font-family: 'Courier New', monospace;
+      padding: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3em;
+      color: #7fffd4;
+      margin-bottom: 50px;
+      text-shadow: 0 0 20px #00ffff, 0 0 40px #0ff;
+      letter-spacing: 2px;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, #00ffff, #0ff);
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .event {
+      padding: 20px 30px;
+      position: relative;
+      width: 50%;
+    }
+
+    .event.left {
+      left: 0;
+    }
+
+    .event.right {
+      left: 50%;
+    }
+
+    .event::before {
+      content: '';
+      position: absolute;
+      top: 25px;
+      width: 20px;
+      height: 20px;
+      background-color: #00ffff;
+      border-radius: 50%;
+      z-index: 1;
+      box-shadow: 0 0 10px #00ffff;
+    }
+
+    .event.left::before {
+      right: -10px;
+    }
+
+    .event.right::before {
+      left: -10px;
+    }
+
+    .event h3 {
+      margin: 0 0 5px 0;
+      color: #00ffff;
+      font-size: 1.2em;
+      text-shadow: 0 0 5px #0ff;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .event p {
+      margin: 0;
+      padding: 0;
+      line-height: 1.5em;
+    }
+
+    @media screen and (max-width: 700px) {
+      .event {
+        width: 100%;
+        left: 0 !important;
+        padding-left: 50px;
+        padding-right: 30px;
+        margin-bottom: 20px;
+      }
+      .event::before {
+        left: 20px !important;
+      }
+      .timeline::before {
+        left: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>SynthiTrace</h1>
+  <div class="timeline">
+    <div class="event left">
+      <h3>2013</h3>
+      <p>点滴堂キャラクター「てんこちゃん」をデザイン</p>
+    </div>
+    <div class="event right">
+      <h3>2015</h3>
+      <p>日本のかわいい本（二見書房）寄稿</p>
+    </div>
+    <div class="event left">
+      <h3>2017</h3>
+      <p>人形うらら浅草まち歩きMAP作成</p>
+    </div>
+    <div class="event right">
+      <h3>2022</h3>
+      <p>喫茶閃光のロゴ・キャラクター「あの子」、マッチ箱デザイン</p>
+    </div>
+    <div class="event left">
+      <h3>2022</h3>
+      <p>ホラーゲーム米砂原醫院へイラスト提供</p>
+    </div>
+    <div class="event right">
+      <h3>2023</h3>
+      <p>8th restのキャラクターをデザイン</p>
+    </div>
+    <div class="event left">
+      <h3>2023</h3>
+      <p>古道具権ノ助のチラシをデザイン</p>
+    </div>
+    <div class="event right">
+      <h3>2023</h3>
+      <p>廃界本（大洋図書）に寄稿</p>
+    </div>
+    <div class="event left">
+      <h3>2024</h3>
+      <p>ホラーゲーム鳴蟇村へイラスト提供</p>
+    </div>
+  </div>
+</body>
+</html>
