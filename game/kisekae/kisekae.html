@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>着せ替え人形</title>
+  <style>
+ @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+#title {
+  position: fixed; /* 画面に固定 */
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 48px;
+  color: #d8bfd8;
+  text-shadow: 0 0 10px #d8bfd8, 0 0 20px #d8bfd8, 0 0 30px #d8bfd8;
+  letter-spacing: 3px;
+  z-index: 9999; /* とにかく前面 */
+}
+
+    body {
+      background: #fdf6f6;
+      margin: 0;
+      overflow: hidden;
+    }
+    #stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+.doll {
+  position: absolute;
+  top: 10vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
+}
+    .item {
+      position: absolute;
+      cursor: grab;
+      z-index: 2;
+    }
+    .item.dragging {
+      cursor: grabbing;
+    }
+  </style>
+</head>
+<body>
+  <div id="title">Kisekae Synth</div>
+  <div id="stage">
+    <!-- 人形本体 -->
+    <img src="girl.png" class="doll" width="300">
+
+    <!-- 服・アクセサリー -->
+    <img src="dress1.png" class="item" style="top:290px; left:280px; width:245px;">
+    <img src="dress2.png" class="item" style="top:320px; left:100px; width:210px;">
+    <img src="dress3.png" class="item" style="top:100px; left:750px; width:215px;">
+    <img src="dress4.png" class="item" style="top:320px; left:760px; width:200px;">
+    <img src="bon1.png"   class="item" style="top:100px; left:80px; width:250px;">
+    <img src="ribbon1.png" class="item" style="top:100px; left:260px; width:180px;">
+    <img src="ribbon2.png" class="item" style="top:200px; left:380px; width:150px;">
+  </div>
+
+  <script>
+    // ドラッグ移動スクリプト
+document.querySelectorAll('.item').forEach(el => {
+  el.onmousedown = function(e) {
+    let shiftX = e.clientX - el.getBoundingClientRect().left;
+    let shiftY = e.clientY - el.getBoundingClientRect().top;
+
+    el.classList.add("dragging");
+
+    function moveAt(pageX, pageY) {
+      el.style.left = pageX - shiftX + 'px';
+      el.style.top = pageY - shiftY + 'px';
+    }
+
+    function onMouseMove(e) {
+      moveAt(e.pageX, e.pageY);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+
+    function onMouseUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      el.classList.remove("dragging");
+    }
+
+    // ← ここを document に
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
+  el.ondragstart = () => false;
+});
+
+  </script>
+</body>
+</html>
